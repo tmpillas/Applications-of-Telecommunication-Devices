@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Σύνδεση στο Smart Home</h1>
+    <form onsubmit="return login(event)">
+      <input type="text" id="username" placeholder="Όνομα Χρήστη" required><br><br>
+      <input type="password" id="password" placeholder="Κωδικός" required><br><br>
+      <button type="submit">Είσοδος</button>
+    </form>
+  </div>
+
+  <script>
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Simple check - in a real app use backend verification!
+      if (username === "admin" && password === "1234") {
+        window.location.href = "index.html";
+      } else {
+        alert("Λάθος στοιχεία!");
+      }
+    }
+  </script>
+</body>
+</html>
