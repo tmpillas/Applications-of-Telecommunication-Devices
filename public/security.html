@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <title>Security</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+    .dashboard .panel { margin-bottom: 20px; }
+    .controls button { margin-right: 10px; padding: 8px 12px; font-size: 14px; }
+    #motionHistorySection { background: #eee; padding: 10px; border-radius: 5px; margin-top: 10px; max-height: 150px; overflow-y: auto; }
+    #motionHistoryList { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Έλεγχος Ασφαλείας Σπιτιού</h1>
+    <div class="dashboard">
+      <div class="panel">
+        <p>🔒 Συναγερμός: <span id="alarmStatus">Απενεργοποιημένος</span></p>
+        <div class="controls">
+          <button onclick="toggleAlarm(true)">Ενεργοποίηση Συναγερμού</button>
+          <button onclick="toggleAlarm(false)">Απενεργοποίηση Συναγερμού</button>
+        </div>
+
+        <p>👣 Κίνηση: <span id="motion">Καμία</span> | 🕒 <span id="motionTime">--</span></p>
+        <button onclick="toggleHistory()" id="historyBtn">📜 Προβολή Ιστορικού</button>
+        <div id="motionHistorySection" style="display: none;">
+          <h3>📜 Ιστορικό Κίνησης</h3>
+          <ul id="motionHistoryList">
+            <li>2024-05-19 21:30:12</li>
+            <li>2024-05-19 19:02:45</li>
+            <li>2024-05-18 22:14:03</li>
+          </ul>
+        </div>
+
+        <p>
+          🧬 Δακτυλικό αποτύπωμα: 
+          <span id="fingerStatus">--</span> 
+          | 🔁 Προσπάθειες που απομένουν: <span id="fingerAttempts">--</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Αρχικοποίηση μεταβλητών για ιστορικό κίνησης
+    const motionHistory = [
+      "2024-05-19 21:30:12",
+      "2024-05-19 19:02:45",
+      "2024-05-18 22:14:03"
+    ];
+
+    // Ενημέρωση ιστορικού κίνησης στη λίστα
+    function addToHistory(time) {
+      const list = document.getElementById("motionHistoryList");
+      const li = document.createElement("li");
+      li.textContent = time;
+      list.prepend(li);
+    }
+
+    // Εναλλαγή προβολής ιστορικού
+    function toggleHistory() {
+      const section = document.getElementById("motionHistorySection");
+      const btn = document.getElementById("historyBtn");
+
+      if (section.style.display === "none") {
+        section.style.display = "block";
+        btn.textContent = "❌ Απόκρυψη Ιστορικού";
+      } else {
+        section.style.display = "none";
+        btn.textContent = "📜 Προβολή Ιστορικού";
+      }
+    }
+
+    // Ενεργοποίηση / Απενεργοποίηση Συναγερμού
+    function toggleAlarm(state) {
+      const statusEl = document.getElementById("alarmStatus");
+      statusEl.innerText = state ? "Ενεργοποιημένος" : "Απενεργοποιημένος";
+      console.log("Συναγερμός:", state ? "ON" : "OFF");
+    }
+
+    // Ενημέρωση κίνησης
+    function updateMotion(status) {
+      const now = new Date().toLocaleString('el-GR');
+      document.getElementById("motion").innerText = status;
+
+      if (status === "Ναι") {
+        document.getElementById("motionTime").innerText = now;
+        motionHistory.push(now);
+        addToHistory(now);
+      }
+    }
+
+    // Ενημέρωση δακτυλικού αποτυπώματος
+    function updateFingerprint(result, remainingAttempts) {
+      const statusEl = document.getElementById("fingerStatus");
+      const attemptsEl = document.getElementById("fingerAttempts");
+
+      if (remainingAttempts <= 0) {
+        statusEl.innerText = "🚫 Κλείδωμα λόγω αποτυχημένων προσπαθειών";
+        statusEl.style.color = "darkred";
+        attemptsEl.innerText = "0";
+        document.querySelectorAll(".controls button").forEach(btn => btn.disabled = true);
+        return;
+      }
+
+      statusEl.innerText = result === "OK" ? "Αποδεκτό" : "Μη αποδεκτό";
+      statusEl.style.color = result === "OK" ? "green" : "red";
+      attemptsEl.innerText = remainingAttempts;
+
+      // Επανενεργοποίηση κουμπιών αν χρειάζεται
+      document.querySelectorAll(".controls button").forEach(btn => btn.disabled = false);
+    }
+
+    // Εκκίνηση με ψεύτικα δεδομένα
+    window.onload = () => {
+      updateFingerprint("FAIL", 2);
+      updateMotion("Καμία"); // Αρχική τιμή κίνησης
+    };
+  </script>
+</body>
+</html>
