@@ -1,0 +1,16 @@
+{
+  "name": "applications-of-telecommunication-devices",
+  "version": "1.0.0",
+  "description": "Repository for the course of \"Applications of Telecommunication Devices\".",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "serialport": "^13.0.0"
+  }
+}

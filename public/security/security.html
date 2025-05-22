@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <title>Security</title>
+      <link rel="stylesheet" href="securitystyle.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="container">
+      <h1>🛡️ Έλεγχος Ασφαλείας Σπιτιού</h1>
+      <div class="dashboard">
+        <div class="panel">
+          <p>🔒 Συναγερμός: <span id="alarmStatus">Απενεργοποιημένος</span></p>
+          <div class="controls">
+            <button onclick="toggleAlarm(true)">Ενεργοποίηση Συναγερμού</button>
+            <button onclick="toggleAlarm(false)">Απενεργοποίηση Συναγερμού</button>
+          </div>
+
+          <p>👣 Κίνηση: <span id="motion">Καμία</span> | 🕒 <span id="motionTime">--</span></p>
+          <button onclick="toggleHistory()" id="historyBtn">📜 Προβολή Ιστορικού</button>
+          <div id="motionHistorySection" style="display: none;">
+            <h3>📜 Ιστορικό Κίνησης</h3>
+            <ul id="motionHistoryList">
+              <li>2024-05-19 21:30:12</li>
+              <li>2024-05-19 19:02:45</li>
+              <li>2024-05-18 22:14:03</li>
+            </ul>
+          </div>
+
+          <div class="fingerprint-status">
+  🧬 Κωδικός εισόδου: <span id="fingerStatus">--</span>
+  &nbsp;|&nbsp; 🔁 Προσπάθειες που απομένουν: <span id="fingerAttempts">--</span>
+</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Background waves -->
+    <div class="wave-container">
+      <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+        <path d="M-9.31,64.42 C149.99,150.00 271.67,-1.19 503.47,79.41 L500.00,150.00 L0.00,150.00 Z"
+              style="stroke: none; fill: rgba(255,255,255,0.1);"></path>
+      </svg>
+    </div>
+  </div>
+    <script src="security.js"></script>
+</body>
+</html>
