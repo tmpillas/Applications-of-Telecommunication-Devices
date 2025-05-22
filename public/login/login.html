@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="loginstyle.css">
+</head>
+<body>
+  <div class="wave-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="rgba(255, 255, 255, 0.1)" fill-opacity="1"
+            d="M0,160L80,176C160,192,320,224,480,229.3C640,235,800,213,960,181.3C1120,149,1280,107,1360,85.3L1440,64V320H0Z">
+      </path>
+    </svg>
+  </div>
+
+  <div class="login-container horizontal-layout">
+    <div class="login-left">
+      <h1>🔐 Καλώς ήρθες πίσω!</h1>
+      <p class="welcome-msg">Παρακαλώ συνδεθείτε για να συνεχίσετε στην εφαρμογή του Security Manager.</p>
+    </div>
+    <div class="login-right">
+      <div class="login-box">
+        <form class="login-form" onsubmit="return login(event)">
+          <div class="input-container">
+            <span class="icon">👤</span>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+          </div>
+          <div class="input-container">
+            <span class="icon">🔒</span>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit">Είσοδος</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
