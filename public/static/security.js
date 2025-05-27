@@ -28,6 +28,7 @@ const motionHistory = [
       const statusEl = document.getElementById("alarmStatus");
       statusEl.innerText = state ? "Enabled" : "Disabled";
       console.log("Alarm:", state ? "ON" : "OFF");
+      statusEl.style.color = state ? "green" : "red";
     }
 
     function updateMotion(status) {
