@@ -1,0 +1,20 @@
+
+<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#00ffff" stroke-width="1.8" stroke-linecap="round">
+    <path d="M40 80 Q60 40, 80 60 Q100 80, 120 60" stroke-dasharray="180" stroke-dashoffset="180">
+      <animate attributeName="stroke-dashoffset" values="180;0;180" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M45 90 Q65 55, 80 70 Q95 85, 115 65" stroke-dasharray="160" stroke-dashoffset="160">
+      <animate attributeName="stroke-dashoffset" values="160;0;160" dur="3s" begin="0.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M50 100 Q68 68, 80 78 Q92 88, 110 70" stroke-dasharray="140" stroke-dashoffset="140">
+      <animate attributeName="stroke-dashoffset" values="140;0;140" dur="3s" begin="0.4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M55 110 Q70 78, 80 85 Q90 92, 105 75" stroke-dasharray="120" stroke-dashoffset="120">
+      <animate attributeName="stroke-dashoffset" values="120;0;120" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M60 120 Q72 90, 80 95 Q88 100, 100 80" stroke-dasharray="100" stroke-dashoffset="100">
+      <animate attributeName="stroke-dashoffset" values="100;0;100" dur="3s" begin="0.8s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

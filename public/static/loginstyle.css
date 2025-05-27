@@ -233,4 +233,97 @@ html, body {
   color: white;
   padding: 1rem;
   max-width: 450px;
+  align-items: center;
+}
+
+.illustration {
+  width: 160px;
+  height: auto;
+  margin-top: 2rem;
+  /* rotate: +270deg; */
+  opacity: 0.9;
+}
+.branding-logo {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 1rem;
+}
+
+.app-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.tagline {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #cfe2ff;
+  margin-bottom: 2rem;
+}
+
+
+
+.flip-card {
+  background-color: transparent;
+  width: 360px;
+  height: 300px;
+  perspective: 1000px;
+  margin: auto;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.flip-card-front {
+  background-color: #0056b3;
+  color: white;
+   backdrop-filter: blur(12px);
+}
+
+.flip-card-back {
+  background: rgba(255, 255, 255, 0.15);          /* translucent white */
+  backdrop-filter: blur(12px);                    /* glass blur effect */
+  border: 1px solid rgba(255, 255, 255, 0.3);      /* subtle border */
+  transform: rotateY(180deg);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  padding: 2rem;
+}
+
+
+.icon-svg {
+  height: 50px;
+  margin-bottom: 1rem;
 }

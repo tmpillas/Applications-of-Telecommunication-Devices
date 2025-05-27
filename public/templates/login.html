@@ -16,11 +16,20 @@
 
   <div class="login-container horizontal-layout">
     <div class="login-left">
-      <h1>🔐 Καλώς ήρθες πίσω!</h1>
-      <p class="welcome-msg">Παρακαλώ συνδεθείτε για να συνεχίσετε στην εφαρμογή του Security Manager.</p>
+      <img src="/static/images/fingerprint-smooth.svg" alt="Fingerprint Animation" class="illustration">
+
+      <h1 class="app-title">Security Manager</h1>
+      <p class="tagline">Protecting your home, 24/7.</p>
     </div>
     <div class="login-right">
-      <div class="login-box">
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <h2>🔐 Ασφαλής Σύνδεση</h2>
+        <p>Περάστε το ποντίκι για να συνδεθείτε</p>
+      </div>
+      <div class="flip-card-back">
+        <img src="/static/images/lock.svg" alt="Lock Icon" class="icon-svg">
         <form class="login-form" onsubmit="return login(event)">
           <div class="input-container">
             <span class="icon">👤</span>
@@ -34,6 +43,30 @@
         </form>
       </div>
     </div>
+  </div>
+</div>
+
+
+
+
+
+
+    
+    <!-- <div class="login-right">
+      <div class="login-box">
+        <form class="login-form" onsubmit="return login(event)">
+          <div class="input-container">
+            <span class="icon">👤</span>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+          </div>
+          <div class="input-container">
+            <span class="icon">🔒</span>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit">Είσοδος</button>
+        </form>
+      </div>
+    </div> -->
   </div>
 
   <script src="/static/login.js" defer></script>
