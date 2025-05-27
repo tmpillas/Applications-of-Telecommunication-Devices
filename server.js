@@ -16,14 +16,22 @@ const PORT = process.env.PORT || 3000;
 
 
 
-
-// Serve static files
+// Serve static files from /public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Redirect to login first
+// Route for root
 app.get('/', (req, res) => {
-  res.redirect('/login/login.html');
+  res.sendFile(path.join(__dirname, 'public', 'templates', 'login.html'));
 });
+
+// // Serve static files
+// app.use(express.static(path.join(__dirname, 'public','templates')));
+
+
+// // Redirect to login first
+// app.get('/', (req, res) => {
+//   res.redirect('login.html');
+// });
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
