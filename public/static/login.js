@@ -5,9 +5,9 @@ function login(event) {
     const password = document.getElementById("password").value;
   
     if (username === "admin" && password === "1234") {
-      window.location.href = "/templates/security.html";
+      window.location.href = "/templates/homepage.html";
     } else {
-      alert("Λάθος στοιχεία σύνδεσης. Προσπαθήστε ξανά.");
+      alert("Invalid username and/or password. Please, try again.");
     }
   }
   
