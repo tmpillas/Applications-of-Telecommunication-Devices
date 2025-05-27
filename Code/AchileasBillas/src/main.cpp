@@ -3,6 +3,12 @@
 #include <RF22.h>
 #include <RF22Router.h>
 
+// BLUE TRANSCEIVER
+// PIN OF BUZZER : A0
+// PIN OF PROXIMITY : A2
+// PINS OF KEYPAD : ROWS (LEFT TO RIGHT)     9 A2 7 6
+//                  COLLUMNS (LEFT TO RIGHT) 5 3 4 A3
+
 #define pingPin  A1
 #define MY_ADDRESS 67 // define my unique address
 #define DESTINATION_ADDRESS_1 66 // define who I can talk to
@@ -15,10 +21,10 @@ int number_of_bytes=0; // will be needed to measure bytes of message
 float throughput=0; // will be needed for measuring throughput
 int flag_measurement=0;
 
-int counter=0;
-int initial_time=0;
-int final_time=0;
-
+int initial_time = 0;
+int final_time = 0;
+long prox_print = 0;
+int interval = 1000;
 
 uint8_t rssi;
 float Pr=-90;
@@ -42,6 +48,8 @@ const String password = "1220";
 bool buzzerflag = false,send;
 int attempts = 3;
 long duration, cm;
+bool correct_code = false;
+
 
 void setup() {
 Serial.begin(9600); // to be able to view the results in the computer's monitor
@@ -75,6 +83,11 @@ Serial.begin(9600); // to be able to view the results in the computer's monitor
 
 void loop() 
 { 
+
+  
+ 
+  if(millis()-prox_print > interval){
+    prox_print = millis();
   pinMode(pingPin, OUTPUT);
   digitalWrite(pingPin, LOW);
   delayMicroseconds(2);
@@ -85,11 +98,9 @@ void loop()
   pinMode(pingPin, INPUT);
   duration = pulseIn(pingPin, HIGH);
   cm = microsecondsToCentimeters(duration);
-  Serial.print(cm);
-  Serial.print("cm");
-  Serial.println();
-
-
+    
+    send = true;
+  }
 
 	char customKey = customKeypad.getKey();
 
@@ -104,6 +115,8 @@ void loop()
       if (inputCode.length() == 4 ) {
         if (inputCode == password) {
           Serial.println("Password is correct, opening door");
+          correct_code = true;
+          send = true;
         } else {
 			if (attempts == 1)
 			{
@@ -121,65 +134,35 @@ void loop()
       }
     }
   }
-//Buzzer logic
-
-//   while(buzzerflag){
-// 	digitalWrite(A0, HIGH);
-// 	delay(100);
-// 	digitalWrite(A0, LOW);
-// 	delay(100);
-//   }
-
-  // Should be a message for us now  
- 
-  counter=0;
+   
   initial_time=millis();
-  int sensorVal = 12; // measure something
- //Serial.print("My measurement is: ");
-  //Serial.println(sensorVal); // and show it on Serial
+  
+  int sensorVal = cm; // PROXIMITY VALUE
   if(send){
   // the following variables are used in order to transform my integer measured value into a uint8_t variable, which is proper for my radio
     char data_read[RF22_ROUTER_MAX_MESSAGE_LEN];
     uint8_t data_send[RF22_ROUTER_MAX_MESSAGE_LEN];
     memset(data_read, '\0', RF22_ROUTER_MAX_MESSAGE_LEN);
     memset(data_send, '\0', RF22_ROUTER_MAX_MESSAGE_LEN);    
-    sprintf(data_read, "%d", sensorVal); // I'm copying the measurement sensorVal into variable data_read
+    sprintf(data_read, "%d,%d,%d,%d", sensorVal,correct_code,buzzerflag,attempts); // I'm copying the measurement sensorVal into variable data_read
     data_read[RF22_ROUTER_MAX_MESSAGE_LEN - 1] = '\0'; 
     memcpy(data_send, data_read, RF22_ROUTER_MAX_MESSAGE_LEN); // now I'm copying data_read to data_send
     number_of_bytes=sizeof(data_send); // I'm counting the number of bytes of my message
-    Serial.print("Number of Bytes= ");
-    Serial.println(number_of_bytes);  // and show the result on my monitor
+    
 
     // just demonstrating that the string I will send, after those transformation from integer to char and back remains the same
-    int sensorVal2=0;
-    sensorVal2=atoi(data_read);
-    Serial.print("The string I'm ready to send is= ");
-    Serial.println(sensorVal2);
+  
+    Serial.println(data_read);
     if (rf22.sendtoWait(data_send, sizeof(data_send), DESTINATION_ADDRESS_1) != RF22_ROUTER_ERROR_NONE) // I'm sending the data in variable data_send to DESTINATION_ADDRESS_1... cross fingers
     {
-      Serial.println("sendtoWait failed"); // for some reason I have failed
+      //LOGIC IF FAIL TODO SOMETHING
     }
     else
     {
-      counter=counter+1;
-      rssi = rf22.rssiRead();
-      Pr=((float)rssi-230.0)/1.8;
-      Serial.print("RSSI= ");
-      Serial.print(Pr);
-      Serial.println(" dBm");
+      send = false;
 
-
-      Serial.println("sendtoWait Successful"); // I have received an acknowledgement from DESTINATION_ADDRESS_1. Data have been delivered!
     }
-    final_time=millis();
-    throughput=(float)counter*number_of_bytes*1000.0/(final_time-initial_time); // *1000 is because time is measured in ms. This is not the communication throughput, but rather each measurement-circle throughput.
-    Serial.print("Throughput=");
-    Serial.print(throughput);
-    Serial.println("Bytes/s");
-    Serial.print("Initial time= ");  
-    Serial.print(initial_time);
-    Serial.print("     Final time= ");  
-    Serial.println(final_time);
+    
   }
 }
 
