@@ -17,17 +17,18 @@ const motionHistory = [
 
       if (section.style.display === "none") {
         section.style.display = "block";
-        btn.textContent = "❌ Απόκρυψη Ιστορικού";
+        btn.textContent = "❌ Hide history";
       } else {
         section.style.display = "none";
-        btn.textContent = "📜 Προβολή Ιστορικού";
+        btn.textContent = "📜 Display history";
       }
     }
 
     function toggleAlarm(state) {
       const statusEl = document.getElementById("alarmStatus");
-      statusEl.innerText = state ? "Ενεργοποιημένος" : "Απενεργοποιημένος";
-      console.log("Συναγερμός:", state ? "ON" : "OFF");
+      statusEl.innerText = state ? "Enabled" : "Disabled";
+      console.log("Alarm:", state ? "ON" : "OFF");
+      statusEl.style.color = state ? "green" : "red";
     }
 
     function updateMotion(status) {
@@ -46,14 +47,14 @@ const motionHistory = [
       const attemptsEl = document.getElementById("fingerAttempts");
 
       if (remainingAttempts <= 0) {
-        statusEl.innerText = "🚫 Κλείδωμα λόγω αποτυχημένων προσπαθειών";
+        statusEl.innerText = "🚫 Locked due to 3 failed attemps to login";
         statusEl.style.color = "darkred";
         attemptsEl.innerText = "0";
         document.querySelectorAll(".controls button").forEach(btn => btn.disabled = true);
         return;
       }
 
-      statusEl.innerText = result === "OK" ? "Αποδεκτός" : "Μη αποδεκτός";
+      statusEl.innerText = result === "OK" ? "Valid" : "Invalid";
       statusEl.style.color = result === "OK" ? "green" : "red";
       attemptsEl.innerText = remainingAttempts;
 
@@ -62,5 +63,5 @@ const motionHistory = [
 
     window.onload = () => {
       updateFingerprint("FAIL", 2);
-      updateMotion("Καμία");
+      updateMotion("None");
     };
