@@ -25,28 +25,35 @@ const motionHistory = [
       }
     }
 
-    let isLocked = true;
+let isLocked = true;
 
-    function toggleLock() {
-      const statusEl = document.getElementById("lockStatus");
-      const buttonEl = document.getElementById("lockToggleBtn");
+function toggleLock() {
+  const statusText = document.getElementById("lockStatusText");
+  const statusIcon = document.getElementById("lockStatusIcon");
+  const buttonEl = document.getElementById("lockToggleBtn");
 
-      isLocked = !isLocked;
+  isLocked = !isLocked;
 
-      if (isLocked) {
-        statusEl.textContent = "Locked✔️";
-        statusEl.style.color = "#16c60c";
-        buttonEl.textContent = "🔓";
-        buttonEl.classList.remove("lock");
-        buttonEl.classList.add("unlock");
-      } else {
-        statusEl.textContent = "Unlocked⁉️";
-        statusEl.style.color = "red";
-        buttonEl.textContent = "🔐";
-        buttonEl.classList.remove("unlock");
-        buttonEl.classList.add("lock");
-      }
-    }
+  if (isLocked) {
+    statusText.textContent = "Locked";
+    statusText.style.color = "#16c60c";
+    statusIcon.src = "/static/images/check.png";    
+    statusIcon.alt = "Locked";
+
+    buttonEl.textContent = "🔓";
+    buttonEl.classList.remove("lock");
+    buttonEl.classList.add("unlock");
+  } else {
+    statusText.textContent = "Unlocked";
+    statusText.style.color = "#ff4141";
+    statusIcon.src = "/static/images/worry.png"; 
+    statusIcon.alt = "Unlocked";
+
+    buttonEl.textContent = "🔐";
+    buttonEl.classList.remove("unlock");
+    buttonEl.classList.add("lock");
+  }
+}
 
 
     function toggleAlarm(state) {
