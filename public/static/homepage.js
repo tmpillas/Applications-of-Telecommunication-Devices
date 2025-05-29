@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const lastCheckSecurity = localStorage.getItem("lastCheckSecurity") || "Never";
   const lastCheckConditions = localStorage.getItem("lastCheckConditions") || "Never";
 
+
   const lastCheckElement = document.getElementById("last-check");
   if (lastCheckElement) {
     lastCheckElement.textContent = 
@@ -39,3 +40,13 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+const logoutBtn = document.getElementById("logout-btn");
+
+function logout() {
+  window.location.href = "login.html"; 
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", logout);
+}
