@@ -35,7 +35,7 @@ const motionHistory = [
 
       if (isLocked) {
         statusEl.textContent = "Locked✔️";
-        statusEl.style.color = "green";
+        statusEl.style.color = "#16c60c";
         buttonEl.textContent = "🔓";
         buttonEl.classList.remove("lock");
         buttonEl.classList.add("unlock");

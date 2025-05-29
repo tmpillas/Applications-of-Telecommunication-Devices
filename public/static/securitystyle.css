@@ -70,12 +70,12 @@
     }
 
     .unlock {
-      background-color: #dc3545 !important;
+      background-color: #d5e0d4dd !important;
       color: white !important;
     }
 
     .lock {
-      background-color: #28a745 !important;
+      background-color: #d5e0d4dd !important;
       color: white !important;
     }
 
@@ -86,15 +86,29 @@
       font-size: 20px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       transition: background-color 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       line-height: 1;
+      background-color: #d5e0d4dd;
     }
 
+    #lockStatus {
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .lock-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
 
     #historyBtn {
       padding: 0.5rem 1rem;
