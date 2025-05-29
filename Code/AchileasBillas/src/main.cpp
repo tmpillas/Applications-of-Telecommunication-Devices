@@ -5,7 +5,7 @@
 
 // BLUE TRANSCEIVER
 // PIN OF BUZZER : A0
-// PIN OF PROXIMITY : A2
+// PIN OF PROXIMITY : A1
 // PINS OF KEYPAD : ROWS (LEFT TO RIGHT)     9 A2 7 6
 //                  COLLUMNS (LEFT TO RIGHT) 5 3 4 A3
 
@@ -23,8 +23,10 @@ int flag_measurement=0;
 
 int initial_time = 0;
 int final_time = 0;
-long prox_print = 0;
-int interval = 1000;
+long prox_print = 0, lastCorrectCode = 0;
+int codeInterval= 10000; // time interval to check for proximity sensor and correct code entry
+bool lastCorrectCodeFlag = false; // flag to indicate if the last code entry was correct
+int interval = 5000;
 
 uint8_t rssi;
 float Pr=-90;
@@ -65,11 +67,6 @@ Serial.begin(9600); // to be able to view the results in the computer's monitor
 
   // Manually define the routes for this network
   rf22.addRouteTo(DESTINATION_ADDRESS_1, DESTINATION_ADDRESS_1); // tells my radio card that if I want to send data to DESTINATION_ADDRESS_1 then I will send them directly to DESTINATION_ADDRESS_1 and not to another radio who would act as a relay
-  for(int pinNumber = 4; pinNumber<6; pinNumber++) // I can use pins 4 to 6 as digital outputs (in the example to turn on/off LEDs that show my status)
-  {
-    pinMode(pinNumber,OUTPUT);
-    digitalWrite(pinNumber, LOW);
-  }
   Serial.println("Welcome THOMA ACHILEA BILLA");
   Serial.println("To open the door, insert the correct password");
 
@@ -104,16 +101,19 @@ void loop()
 
 	char customKey = customKeypad.getKey();
 
-  if (customKey &&  !buzzerflag) {
+  if (customKey &&  !buzzerflag && lastCorrectCodeFlag==false ) { // Check if a key is pressed and buzzer is not active
     Serial.println(customKey);
-    
+    prox_print = millis(); // reset the timer for proximity sensor
+    send = false; // reset send flag
     // Only accept digits, discard other keys like A-D, *, #
     if (isDigit(customKey)) {
       inputCode += customKey;
 
       // Once 4 digits entered, check the code
       if (inputCode.length() == 4 ) {
-        if (inputCode == password) {
+        if (inputCode == password) {\
+          lastCorrectCode = millis(); // record the time of the last correct code entry
+          lastCorrectCodeFlag = true; // set flag to indicate correct code was entered
           Serial.println("Password is correct, opening door");
           correct_code = true;
           send = true;
@@ -133,6 +133,11 @@ void loop()
         inputCode = ""; // reset for next attempt
       }
     }
+  }
+  if (lastCorrectCodeFlag && (millis() - lastCorrectCode > codeInterval)) {
+    attempts = 3; // reset attempts after code interval
+    lastCorrectCodeFlag = false; // reset flag
+    correct_code = false; // reset correct code flag
   }
    
   initial_time=millis();
