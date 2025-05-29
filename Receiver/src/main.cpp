@@ -4,7 +4,7 @@
 #include <dht11.h>
 #include <Servo.h>
 
-
+#define ALARM_PIN 7 // Digital pin connected to the buzzer
 #define DHT11PIN 3     // Digital pin connected to the DHT sensor
 #define LASERPIN 5 // Digital pin connected to the laser
 #define MY_ADDRESS 66 // define my unique address
@@ -23,12 +23,21 @@ int frontDoorDistance = 0; // Variable to store the distance from the front door
 int isCorrectCode = 0; // Variable to store if the code is correct
 int isBuzzerOn = 0; // Variable to store if the buzzer is on
 int attemptsLeft = 0; // Variable to store the number of attempts left
+int humidity = 0; // Variable to store humidity value
+int temperature = 0; // Variable to store temperature value
+int movement = 0; // Variable to store movement status
 int separate (String str, char   **p, int    size );
+char message[100];
+int isLocked = 0;
+long lastmovement = 0, lastDoorApproached=0; // Variable to store the time of the last movement
+int doorApproached = 0, someoneApproachedDoor=0; // Variable to store if the door has been approached
+int isAlarmOn = 0; // Variable to store if the alarm is on
 
 void setup() {
   Serial.begin(9600);
   pinMode(LASERPIN, INPUT); // Set the laser pin as output
   myservo.attach(9);  // attaches the servo on pin 9 to the Servo object
+  pinMode(ALARM_PIN, OUTPUT); // Set the buzzer pin as output
 
   if (!rf22.init())
     Serial.println("RF22 init failed");
@@ -50,23 +59,65 @@ void loop()
 
   // Read data from DHT11 sensor
   int chk = DHT11.read(DHT11PIN);
-  // Serial.print("Humidity (%): ");
-  // Serial.println((float)DHT11.humidity, 2);
 
-  // Serial.print("Temperature  (C): ");
-  // Serial.println((float)DHT11.temperature, 2);
+  humidity = DHT11.humidity; // Store humidity value
+  temperature = DHT11.temperature; // Store temperature value
+
+
   delay(1000); // Wait for 2 seconds before the next reading
 
-  // Check if the laser is triggered
-  // if(digitalRead(LASERPIN)==LOW){
-  //   Serial.println("Obstacles!");
-  //   myservo.write(180);                  
-  // }
-  // else{
-  //   Serial.println("NO Obstacles!");
-  //   myservo.write(0);                  
-  // }
 
+  // Check if the laser is triggered
+  if (millis() - lastmovement > 5 && movement == 1) { 
+    movement = 0; // Reset movement flag after 10 seconds of no movement
+  }
+  if(digitalRead(LASERPIN)==LOW){
+    // Serial.println("Obstacles!");   
+    movement = 1; // Set movement flag to true
+    lastmovement = millis(); // Record the time of the last movement             
+  }
+
+  if (frontDoorDistance<100 && doorApproached == 0) { // If the distance is less than 100 cm and the door has not been approached yet
+    doorApproached = 1; // Set the doorApproached flag to true
+    lastDoorApproached=millis();
+  }
+  else if (frontDoorDistance >= 100 && doorApproached == 1) { // If the distance is greater than or equal to 100 cm and the door has been approached
+    doorApproached = 0; // Reset the doorApproached flag
+    someoneApproachedDoor = 0; // Reset the someoneApproachedDoor flag
+  }
+  if (doorApproached == 1 && millis() - lastDoorApproached > 10000) { // If the door has been approached for more than 10 seconds
+    someoneApproachedDoor = 1; // Set the someoneApproachedDoor flag to true
+  }
+
+    if (Serial.available()){
+      int incomingByte = Serial.read(); // Read the incoming byte from the serial monitor
+      if (incomingByte == '1') { // If the incoming byte is '1'
+        myservo.write(0); // Open the door
+        isLocked = 0; // Set the isLocked flag to false
+        digitalWrite(ALARM_PIN, LOW); // Turn off the buzzer
+        isAlarmOn = 0; // Set the isAlarmOn flag to false
+        // Serial.println("Door opened");
+      } else if (incomingByte == '0') { // If the incoming byte is '0'
+        myservo.write(150); // Lock the door
+        isLocked = 1; // Set the isLocked flag to true
+        // Serial.println("Door locked");
+      }
+    }
+  if(isBuzzerOn || movement || someoneApproachedDoor) { // If the buzzer is on, or there is movement, or someone has approached the door
+    myservo.write(150);
+    isLocked = 1;
+  }
+  if (isBuzzerOn || movement){
+    digitalWrite(ALARM_PIN, HIGH); // Turn on the buzzer
+    isAlarmOn = 1; // Set the isAlarmOn flag to true
+
+  }
+  if (isCorrectCode){
+    myservo.write(0);
+    isLocked = 0;
+    digitalWrite(ALARM_PIN, LOW); // Turn off the buzzer
+    isAlarmOn = 0; // Set the isAlarmOn flag to false
+  }
 
   // Should be a message for us now  
   uint8_t buf[RF22_ROUTER_MAX_MESSAGE_LEN];
@@ -99,12 +150,17 @@ void loop()
       isCorrectCode = atoi (sPtr [1]);
       isBuzzerOn = atoi (sPtr [2]);
       attemptsLeft = atoi (sPtr [3]);
-      for (int n = 0; n < N; n++)
-          Serial.println (sPtr [n]);
+      // for (int n = 0; n < N; n++)
+      //     Serial.println (sPtr [n]);
     }
 
 
   }
+  
+  sprintf (message, "$%d,%d,%d,%d,%d,%d,%d,%d,!", frontDoorDistance, isCorrectCode, isAlarmOn, attemptsLeft, humidity, temperature, movement,isLocked);
+  Serial.println(message);
+
+
 }
 
 
