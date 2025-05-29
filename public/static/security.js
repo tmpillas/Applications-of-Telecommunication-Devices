@@ -1,4 +1,7 @@
 const motionHistory = [];
+let lastDisplayedMotionTime = 0;
+let lastMotion = "No"; // Initialize lastMotion to "No"
+const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
     
     function addToHistory(time) {
       const list = document.getElementById("motionHistoryList");
@@ -47,14 +50,49 @@ const motionHistory = [];
       statusEl.style.color = state ? "green" : "red";
     }
 
-    function updateMotion(status) {
+    // function updateMotion(status) {
+    //   const now = new Date();
+    //   const nowFormatted = now.toLocaleString('en-US');
+    //   const nowMillis = now.getTime();
+
+    //   if (status === "Yes") {
+    //     motionHistory.push(nowFormatted);
+        
+        
+    //     if (
+    //       nowMillis - lastDisplayedMotionTime >= DISPLAY_INTERVAL ||
+    //       motionHistory.length === 1
+    //     ) {
+    //       document.getElementById("motion").textContent = status;
+    //       document.getElementById("motionTime").innerText = nowFormatted;
+    //       addToHistory(nowFormatted);
+    //       lastDisplayedMotionTime = nowMillis;
+    //     }
+    //   } else {
+    //     document.getElementById("motion").textContent = "No";
+    //   }
+    // }
+    // function updateMotion(status) {
+    //   const now = new Date().toLocaleString('en-US');     
+    //   document.getElementById("motion").textContent = status;
+
+    //   if (status === "Yes") {
+    //     document.getElementById("motionTime").innerText = now;
+    //     motionHistory.push(now);
+    //     addToHistory(now);
+    //   }
+    // }
+     function updateMotion(status) {
       const now = new Date().toLocaleString('en-US');     
       document.getElementById("motion").textContent = status;
 
-      if (status === "Yes") {
-        document.getElementById("motionTime").innerText = now;
-        motionHistory.push(now);
-        addToHistory(now);
+      if (status !== lastMotion) {
+        lastMotion = status; 
+        if (status === "Yes") {
+          document.getElementById("motionTime").innerText = now;
+          motionHistory.push(now);
+          addToHistory(now);
+        }
       }
     }
 
@@ -63,8 +101,14 @@ const motionHistory = [];
       document.getElementById('codeAttempts').textContent = remainingAttempts;
     }
 
+    // function toggleLockEXT() {
+    //   serialPort.write('1'); // Send 1 to toggle lock
+    // }
+
+
 async function fetchSecurityData() {
   try {
+    //serialPort.write('1\n');
     const res = await fetch('/data');
     const data = await res.json();
 
@@ -75,7 +119,19 @@ async function fetchSecurityData() {
     toggleAlarm(data.isAlarmOn === "1");
 
     // Code validation
-    updateCode(data.isCorrectCode === "1" ? "OK" : "FAIL", parseInt(data.attemptsLeft));
+    if ( data.attemptsLeft === "3") {
+      updateCode("ENTER CODE", parseInt(data.attemptsLeft));
+    }
+    else if  (data.isCorrectCode === "1" && data.attemptsLeft === "2") {
+      updateCode("OK", parseInt(data.attemptsLeft));
+    }
+    else if  (data.isCorrectCode === "1" && data.attemptsLeft === "1") {
+      updateCode("OK", parseInt(data.attemptsLeft));
+    }
+    else if (data.isCorrectCode === "0") {
+      updateCode("FAIL", parseInt(data.attemptsLeft));
+    }
+    // updateCode(data.isCorrectCode === "1" ? "OK" : "FAIL", parseInt(data.attemptsLeft));
 
     // Motion detection
     updateMotion(data.movementInHome === "1" ? "Yes" : "No");
