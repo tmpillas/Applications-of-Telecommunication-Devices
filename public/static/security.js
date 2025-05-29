@@ -4,6 +4,7 @@ const motionHistory = [
       "2024-05-18 22:14:03"
     ];
 
+    
     function addToHistory(time) {
       const list = document.getElementById("motionHistoryList");
       const li = document.createElement("li");
@@ -32,10 +33,10 @@ const motionHistory = [
     }
 
     function updateMotion(status) {
-      const now = new Date().toLocaleString('el-GR');
+      const now = new Date().toLocaleString('en-US');
       document.getElementById("motion").innerText = status;
 
-      if (status === "Ναι") {
+      if (status === "Yes") {
         document.getElementById("motionTime").innerText = now;
         motionHistory.push(now);
         addToHistory(now);
@@ -61,7 +62,29 @@ const motionHistory = [
       document.querySelectorAll(".controls button").forEach(btn => btn.disabled = false);
     }
 
-    window.onload = () => {
-      updateFingerprint("FAIL", 2);
-      updateMotion("None");
-    };
+async function fetchSecurityData() {
+  try {
+    const res = await fetch('/data');
+    const data = await res.json();
+
+    // Alarm status
+    toggleAlarm(data.isAlarmOn === "1");
+
+    // Fingerprint validation
+    updateFingerprint(data.isCorrectCode === "1" ? "OK" : "FAIL", parseInt(data.attemptsLeft));
+
+    // Motion detection
+    if (data.movementInHome === "1") {
+      updateMotion("Yes"); 
+    } else {
+      updateMotion("No"); 
+    }
+
+  } catch (err) {
+    console.error("Error fetching security data:", err);
+  }
+}
+window.onload = () => {
+  fetchSecurityData();
+  setInterval(fetchSecurityData, 1000);
+};
