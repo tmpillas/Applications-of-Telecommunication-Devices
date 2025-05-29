@@ -113,11 +113,13 @@
       margin-top: 1rem;
       max-height: 150px;
       overflow-y: auto;
+      color: black;
     }
 
     #motionHistoryList {
       text-align: left;
       padding-left: 20px;
+      color:black;
     }
 
 .back-button {

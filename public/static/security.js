@@ -1,9 +1,4 @@
-const motionHistory = [
-      "2024-05-19 21:30:12",
-      "2024-05-19 19:02:45",
-      "2024-05-18 22:14:03"
-    ];
-
+const motionHistory = [];
     
     function addToHistory(time) {
       const list = document.getElementById("motionHistoryList");
@@ -25,15 +20,12 @@ const motionHistory = [
       }
     }
 
-    let isLocked = true;
-
-    function toggleLock() {
+    // Toggle lock DOULEVEI
+    function toggleLock(isLocked) {
       const statusEl = document.getElementById("lockStatus");
       const buttonEl = document.getElementById("lockToggleBtn");
 
-      isLocked = !isLocked;
-
-      if (isLocked) {
+      if (isLocked === "1") {
         statusEl.textContent = "Locked✔️";
         statusEl.style.color = "green";
         buttonEl.textContent = "🔓";
@@ -48,7 +40,6 @@ const motionHistory = [
       }
     }
 
-
     function toggleAlarm(state) {
       const statusEl = document.getElementById("alarmStatus");
       statusEl.innerText = state ? "Enabled" : "Disabled";
@@ -57,8 +48,8 @@ const motionHistory = [
     }
 
     function updateMotion(status) {
-      const now = new Date().toLocaleString('en-US');
-      document.getElementById("motion").innerText = status;
+      const now = new Date().toLocaleString('en-US');     
+      document.getElementById("motion").textContent = status;
 
       if (status === "Yes") {
         document.getElementById("motionTime").innerText = now;
@@ -67,23 +58,9 @@ const motionHistory = [
       }
     }
 
-    function updateFingerprint(result, remainingAttempts) {
-      const statusEl = document.getElementById("fingerStatus");
-      const attemptsEl = document.getElementById("fingerAttempts");
-
-      if (remainingAttempts <= 0) {
-        statusEl.innerText = "🚫 Locked due to 3 failed attemps to login";
-        statusEl.style.color = "darkred";
-        attemptsEl.innerText = "0";
-        document.querySelectorAll(".controls button").forEach(btn => btn.disabled = true);
-        return;
-      }
-
-      statusEl.innerText = result === "OK" ? "Valid" : "Invalid";
-      statusEl.style.color = result === "OK" ? "green" : "red";
-      attemptsEl.innerText = remainingAttempts;
-
-      document.querySelectorAll(".controls button").forEach(btn => btn.disabled = false);
+    function updateCode(result, remainingAttempts) {
+      document.getElementById('codeStatus').textContent = result;
+      document.getElementById('codeAttempts').textContent = remainingAttempts;
     }
 
 async function fetchSecurityData() {
@@ -91,18 +68,17 @@ async function fetchSecurityData() {
     const res = await fetch('/data');
     const data = await res.json();
 
+    //Lock status
+    toggleLock(data.isLocked);
+
     // Alarm status
     toggleAlarm(data.isAlarmOn === "1");
 
-    // Fingerprint validation
-    updateFingerprint(data.isCorrectCode === "1" ? "OK" : "FAIL", parseInt(data.attemptsLeft));
+    // Code validation
+    updateCode(data.isCorrectCode === "1" ? "OK" : "FAIL", parseInt(data.attemptsLeft));
 
     // Motion detection
-    if (data.movementInHome === "1") {
-      updateMotion("Yes"); 
-    } else {
-      updateMotion("No"); 
-    }
+    updateMotion(data.movementInHome === "1" ? "Yes" : "No");
 
   } catch (err) {
     console.error("Error fetching security data:", err);
