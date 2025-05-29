@@ -122,3 +122,21 @@ h1 {
 .logout-btn:hover {
   background-color: #c82333;
 }
+
+.connect-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 70%;
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.connect-btn:hover {
+  background-color: #0056b3;
+}
+
