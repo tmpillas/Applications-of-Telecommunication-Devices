@@ -4,7 +4,7 @@
       const data = await res.json();
 
       document.getElementById('temperature').textContent = data.temperature + ' °C';
-      document.getElementById('humidity').textContent = data.humidity + ' %'; // Optional
+      document.getElementById('humidity').textContent = data.humidity + ' %'; 
 
     } catch (err) {
       console.error('Failed to fetch data:', err);
