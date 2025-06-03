@@ -23,8 +23,7 @@ const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
       }
     }
 
-    // Toggle lock DOULEVEI
-    function toggleLock(isLocked) {
+    function arduinoLock(isLocked) {
       const statusEl = document.getElementById("lockStatus");
       const buttonEl = document.getElementById("lockToggleBtn");
 
@@ -40,6 +39,25 @@ const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
         buttonEl.textContent = "🔐";
         buttonEl.classList.remove("unlock");
         buttonEl.classList.add("lock");
+      }
+    }
+
+    // Toggle lock DOULEVEI
+    async function toggleLock(isLocked) {
+      try {
+        const statusEl = document.getElementById("lockStatus");
+
+        // Decide command based on current lock status
+        const command = statusEl.textContent === "Locked✔️" ? "0" : "1";
+        // Send command to server
+        const response = await fetch(`/send?message=${command}`);
+        // response = await fetch('/send?message=0');
+
+        // Optionally refresh lock status after sending
+        setTimeout(fetchSecurityData, 500); // Delay briefly to let Arduino respond
+
+      } catch (err) {
+        console.error("Error sending lock command:", err);
       }
     }
 
@@ -113,7 +131,7 @@ async function fetchSecurityData() {
     const data = await res.json();
 
     //Lock status
-    toggleLock(data.isLocked);
+    arduinoLock(data.isLocked);
 
     // Alarm status
     toggleAlarm(data.isAlarmOn === "1");
