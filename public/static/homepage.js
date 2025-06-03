@@ -50,3 +50,17 @@ function logout() {
 if (logoutBtn) {
   logoutBtn.addEventListener("click", logout);
 }
+
+let appEnabled = true;
+
+function toggleApp() {
+  const appBtn = document.getElementById("appToggleBtn");
+  appEnabled = !appEnabled;
+
+  if (appEnabled) {
+    appBtn.classList.remove("off");
+  } else {
+    appBtn.classList.add("off");
+  }
+}
+

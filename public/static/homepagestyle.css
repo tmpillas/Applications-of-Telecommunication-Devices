@@ -4,10 +4,11 @@
       padding: 0;
     }
 
-body, html {
-  height: 100%;
-  font-family: Arial, sans-serif;
-}
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e1e8f4;
+    }
 
 .home-container {
   display: flex;
@@ -29,18 +30,21 @@ body, html {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 2;
   text-align: center;
+  background: rgba(255, 255, 255, 0.15);          /* translucent white */
+  backdrop-filter: blur(50px);                    /* glass blur effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); 
 }
 
 h1 {
   text-align: center;
-  color: #0d47a1;
+  color: #e1e8f4;
   margin-bottom: 3rem;
 }
 
 .last-check {
   margin-top: 6rem;
   font-size: 1rem;
-  color: #555;
+  color: #e1e8f4;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -71,10 +75,11 @@ h1 {
   border: none;
   border-radius: 8px;
   background-color: #007bff;
-  color: white;
+  color: #e1e8f4;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .button:hover {
@@ -92,7 +97,6 @@ h1 {
 
 .settings-btn {
   background-color: #007bff;
-  color: white;
   border: none;
   border-radius: 50%;
   width: 48px;
@@ -109,7 +113,8 @@ h1 {
 
 .logout-btn {
   background-color: #dc3545;
-  color: white;
+  font-weight: bold;
+  color: #e1e8f4;
   border: none;
   border-radius: 8px;
   padding: 10px 16px;
@@ -125,7 +130,6 @@ h1 {
 
 .connect-btn {
   background-color: #007bff;
-  color: white;
   border: none;
   border-radius: 70%;
   width: 48px;
@@ -139,4 +143,29 @@ h1 {
 .connect-btn:hover {
   background-color: #0056b3;
 }
+
+.app-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #16c60c; /* πράσινο όταν είναι ενεργό */
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.app-toggle.off {
+  background-color: #dc3545; /* κόκκινο όταν είναι απενεργοποιημένο */
+}
+
+.power-icon {
+  width: 30px;
+  height: 30px;
+}
+
 
