@@ -25,29 +25,23 @@ const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
 
     // Toggle lock DOULEVEI
     function toggleLock(isLocked) {
-      const statusText = document.getElementById("lockStatus");
+      const statusEl = document.getElementById("lockStatus");
       const buttonEl = document.getElementById("lockToggleBtn");
-      const statusIcon = document.getElementById("lockStatusIcon");
 
       if (isLocked === "1") {
-        statusText.textContent = "Locked";
-        statusText.style.color = "#16c60c";
+        statusEl.textContent = "Locked✔️";
+        statusEl.style.color = "green";
         buttonEl.textContent = "🔓";
-        statusIcon.src = "/static/images/check.png";    
-        statusIcon.alt = "Locked";
         buttonEl.classList.remove("lock");
         buttonEl.classList.add("unlock");
       } else {
-        statusText.textContent = "Unlocked⁉";
-        statusText.style.color = "#ff4141";
-        statusIcon.src = "/static/images/worry.png"; 
-        statusIcon.alt = "Unlocked";
+        statusEl.textContent = "Unlocked⁉️";
+        statusEl.style.color = "red";
         buttonEl.textContent = "🔐";
         buttonEl.classList.remove("unlock");
         buttonEl.classList.add("lock");
       }
     }
-
 
     function toggleAlarm(state) {
       const statusEl = document.getElementById("alarmStatus");
