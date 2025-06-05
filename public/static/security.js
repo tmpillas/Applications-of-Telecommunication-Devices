@@ -27,7 +27,7 @@ const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
       const statusEl = document.getElementById("lockStatus");
       const buttonEl = document.getElementById("lockToggleBtn");
 
-      if (isLocked === "1") {
+      if (Number(isLocked)) {
         statusEl.textContent = "Locked✔️";
         statusEl.style.color = "green";
         buttonEl.textContent = "🔓";
