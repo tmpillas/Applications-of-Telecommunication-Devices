@@ -102,13 +102,20 @@
       text-shadow: 1px 1px 1px black;
     }
 
-    .lock-row {
+    .lock-status-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 1rem;
       margin-bottom: 1rem;
+      gap: 0.5rem;
     }
+
+    .lock-status-row p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #e1e8f4;
+    }
+
 
     #historyBtn {
       padding: 0.5rem 1rem;
