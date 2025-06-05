@@ -15,7 +15,9 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: linear-gradient(135deg, #0d47a1 20%, #0056b3 80%);
+  /*background: linear-gradient(135deg, #182d4b 20%, #0056b3 80%);
+  */
+  background: #182d4b;
   position: relative;
   overflow: hidden;
 }
@@ -74,8 +76,8 @@ h1 {
   font-size: 18px;
   border: none;
   border-radius: 8px;
-  background-color: #007bff;
-  color: #e1e8f4;
+  background-color: #7aacc5;
+  color: #e3e8ec;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-decoration: none;
@@ -83,7 +85,7 @@ h1 {
 }
 
 .button:hover {
-  background-color: #0056b3;
+  background-color: #93bcdb;
 }
 
 .upper-right-buttons {
@@ -96,7 +98,7 @@ h1 {
 }
 
 .settings-btn {
-  background-color: #007bff;
+  background-color: #7aacc5;
   border: none;
   border-radius: 50%;
   width: 48px;
@@ -108,11 +110,11 @@ h1 {
 }
 
 .settings-btn:hover {
-  background-color: #0056b3;
+  background-color: #93bcdb;
 }
 
 .logout-btn {
-  background-color: #dc3545;
+  background-color: #a01e2b;
   font-weight: bold;
   color: #e1e8f4;
   border: none;
@@ -129,7 +131,7 @@ h1 {
 }
 
 .connect-btn {
-  background-color: #007bff;
+  background-color: #7aacc5;
   border: none;
   border-radius: 70%;
   width: 48px;
@@ -141,7 +143,7 @@ h1 {
 }
 
 .connect-btn:hover {
-  background-color: #0056b3;
+  background-color: #93bcdb;
 }
 
 .app-toggle {
@@ -168,4 +170,12 @@ h1 {
   height: 30px;
 }
 
-
+.icon-logo {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
