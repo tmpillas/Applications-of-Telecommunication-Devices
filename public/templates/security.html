@@ -11,14 +11,12 @@
       <h1>🛡️ Security Control</h1>
       <div class="dashboard">
         <div class="panel">
-          <div class="lock-row">
-          <p>🔑 Lock Status:
-          <span id="lockStatusText">--</span>
-          <img id="lockStatusIcon" src="" alt="status icon" style="width: 25px; vertical-align: middle; margin-left: 5px; margin-bottom: 5px;" />
-          </p>
-          <button id="lockToggleBtn" onclick="toggleLock()">-</button>
-          </div>
-
+        <p>🔑 Lock Status: <span id="lockStatus">--</span></p>
+        <div class="controls">
+          <button id="lockToggleBtn" onclick="toggleLock()" >
+            -
+          </button>
+        </div>
           <p>🚨 Alarm: <span id="alarmStatus">--</span></p>
 
           <p>👣 Movement: <span id="motion"></span> | 🕒 <span id="motionTime">--</span></p>

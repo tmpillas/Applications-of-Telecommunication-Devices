@@ -17,10 +17,11 @@ let movementInHome = null;
 let isLocked = null;
 
 let serialPortConnected = false;
+let serialPort = null;
 
 try {
-  const serialPort = new SerialPort({
-    path: 'COM11', // Change this to your actual port
+  serialPort = new SerialPort({
+    path: 'COM13', // Change this to your actual port
     baudRate: 9600,
     autoOpen: false
   });
@@ -79,6 +80,27 @@ app.get('/conditions', (req, res) => {
 app.get('/security', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'templates', 'security.html'));
 });
+
+app.get('/send', (req, res) => {
+  if (!serialPortConnected || !serialPort ||  !serialPort.isOpen) {
+    return res.status(500).send('Serial port not open.');
+  }
+
+  const message = req.query.message;
+  if (!message) {
+    return res.status(400).send('No message provided.');
+  }
+
+  serialPort.write(message + '\n', (err) => {
+    if (err) {
+      return res.status(500).send('Error writing to serial port: ' + err.message);
+    }
+    console.log('[WRITE] Sent to Arduino:', message);
+    res.send('Message sent: ' + message);
+  });
+});
+
+
 
 // Start the server
 app.listen(PORT, () => {

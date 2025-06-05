@@ -23,31 +23,43 @@ const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
       }
     }
 
-    // Toggle lock DOULEVEI
-    function toggleLock(isLocked) {
-      const statusText = document.getElementById("lockStatus");
+    function arduinoLock(isLocked) {
+      const statusEl = document.getElementById("lockStatus");
       const buttonEl = document.getElementById("lockToggleBtn");
-      const statusIcon = document.getElementById("lockStatusIcon");
 
       if (isLocked === "1") {
-        statusText.textContent = "Locked";
-        statusText.style.color = "#16c60c";
+        statusEl.textContent = "Locked✔️";
+        statusEl.style.color = "green";
         buttonEl.textContent = "🔓";
-        statusIcon.src = "/static/images/check.png";    
-        statusIcon.alt = "Locked";
         buttonEl.classList.remove("lock");
         buttonEl.classList.add("unlock");
       } else {
-        statusText.textContent = "Unlocked⁉";
-        statusText.style.color = "#ff4141";
-        statusIcon.src = "/static/images/worry.png"; 
-        statusIcon.alt = "Unlocked";
+        statusEl.textContent = "Unlocked⁉️";
+        statusEl.style.color = "red";
         buttonEl.textContent = "🔐";
         buttonEl.classList.remove("unlock");
         buttonEl.classList.add("lock");
       }
     }
 
+    // Toggle lock DOULEVEI
+    async function toggleLock(isLocked) {
+      try {
+        const statusEl = document.getElementById("lockStatus");
+
+        // Decide command based on current lock status
+        const command = statusEl.textContent === "Locked✔️" ? "0" : "1";
+        // Send command to server
+        const response = await fetch(`/send?message=${command}`);
+        // response = await fetch('/send?message=0');
+
+        // Optionally refresh lock status after sending
+        setTimeout(fetchSecurityData, 500); // Delay briefly to let Arduino respond
+
+      } catch (err) {
+        console.error("Error sending lock command:", err);
+      }
+    }
 
     function toggleAlarm(state) {
       const statusEl = document.getElementById("alarmStatus");
@@ -119,7 +131,7 @@ async function fetchSecurityData() {
     const data = await res.json();
 
     //Lock status
-    toggleLock(data.isLocked);
+    arduinoLock(data.isLocked);
 
     // Alarm status
     toggleAlarm(data.isAlarmOn === "1");
