@@ -1,9 +1,0 @@
-
-<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="90" cy="90" r="88" stroke="#c9b037" stroke-width="4" fill="none" />
-  <path d="M90 40 L90 140" stroke="#c9b037" stroke-width="4" stroke-linecap="round"/>
-  <path d="M70 60 L110 120" stroke="#c9b037" stroke-width="4" stroke-linecap="round"/>
-  <path d="M110 60 L70 120" stroke="#c9b037" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="90" cy="90" r="10" fill="#c9b037" />
-  <text x="90" y="170" text-anchor="middle" font-size="14" fill="#c9b037" font-family="Georgia, serif">VATICAN</text>
-</svg>
