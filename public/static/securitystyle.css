@@ -15,7 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100%;
-      background: linear-gradient(135deg, #0d47a1 20%, #0056b3 80%);
+      background: #182d4b;
       position: relative;
       overflow: hidden;
     }
@@ -70,12 +70,12 @@
     }
 
     .unlock {
-      background-color: green !important;
+      background-color: #dc3545 !important;
       color: white !important;
     }
 
     .lock {
-      background-color: red !important;
+      background-color: #16c60c !important;
       color: white !important;
     }
 
@@ -93,7 +93,7 @@
       justify-content: center;
       text-align: center;
       line-height: 1;
-      background-color: #d5e0d4dd;
+      background-color: #93bcdb;
     }
 
     #lockStatusText {
@@ -121,40 +121,41 @@
       padding: 0.5rem 1rem;
       border: none;
       border-radius: 6px;
-      background-color: #007bff;
-      color: #e1e8f4;
+      background-color: #93bcdb;
+      color: #e3e8ec;
       cursor: pointer;
       margin-bottom: 1rem;
+      font-weight: bold;
     }
 
     #motionHistorySection {
-      background: #f1f3f4;
+      background: #93bcdb;
       padding: 1rem;
       border-radius: 8px;
       margin-top: 1rem;
       max-height: 150px;
       overflow-y: auto;
-      color: black;
+      color: #e1e8f4;
     }
 
     #motionHistoryList {
       text-align: left;
       padding-left: 20px;
-      color:black;
+      color:#e1e8f4;
     }
 
 .back-button {
   position: fixed;          
   top: 20px;           
   right: 20px;               
-  background-color: #007bff; 
+  background-color: #7aacc5; 
   color: #e1e8f4;
   border: none;
   border-radius: 30px;   
   padding: 12px 24px;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
   z-index: 1000;            
   display: flex;
@@ -164,8 +165,18 @@
 }
 
 .back-button:hover {
-  background-color: #0056b3;
+  background-color: #93bcdb;
   transform: scale(1.05);
+}
+
+.icon-logo {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
 
