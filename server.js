@@ -15,13 +15,14 @@ let humidity = null;
 let temperature = null;
 let movementInHome = null;
 let isLocked = null;
+let enabled = null; // App state variable
 
 let serialPortConnected = false;
 let serialPort = null;
 
 try {
   serialPort = new SerialPort({
-    path: 'COM13', // Change this to your actual port
+    path: 'COM14', // Change this to your actual port
     baudRate: 9600,
     autoOpen: false
   });
@@ -40,8 +41,8 @@ try {
 
         if (trimmed.startsWith('$') && trimmed.endsWith('!')) {
           const parts = trimmed.slice(1, -1).split(',');
-          [frontDoorDistance, isCorrectCode, isAlarmOn, attemptsLeft, humidity, temperature, movementInHome, isLocked] = parts;
-          console.log('[DATA] Parsed:', { frontDoorDistance, isCorrectCode, isAlarmOn, attemptsLeft, humidity, temperature, movementInHome, isLocked });
+          [frontDoorDistance, isCorrectCode, isAlarmOn, attemptsLeft, humidity, temperature, movementInHome, isLocked, enabled] = parts;
+          console.log('[DATA] Parsed:', { frontDoorDistance, isCorrectCode, isAlarmOn, attemptsLeft, humidity, temperature, movementInHome, isLocked, enabled });
         }
       });
     }
@@ -61,6 +62,7 @@ app.get('/data', (req, res) => {
     temperature,
     movementInHome,
     isLocked,
+    enabled,
     arduinoConnected: serialPortConnected
   });
 });
@@ -79,6 +81,9 @@ app.get('/conditions', (req, res) => {
 
 app.get('/security', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'templates', 'security.html'));
+});
+app.get('/homepage', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'templates', 'homepage.html'));
 });
 
 app.get('/send', (req, res) => {

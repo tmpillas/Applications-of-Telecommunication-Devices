@@ -1,3 +1,5 @@
+let data;
+
 window.addEventListener("DOMContentLoaded", () => {
   const lastCheckSecurity = localStorage.getItem("lastCheckSecurity") || "Never";
   const lastCheckConditions = localStorage.getItem("lastCheckConditions") || "Never";
@@ -51,16 +53,66 @@ if (logoutBtn) {
   logoutBtn.addEventListener("click", logout);
 }
 
-let appEnabled = true;
 
-function toggleApp() {
-  const appBtn = document.getElementById("appToggleBtn");
-  appEnabled = !appEnabled;
 
-  if (appEnabled) {
-    appBtn.classList.remove("off");
-  } else {
-    appBtn.classList.add("off");
+
+
+
+// // Toggle the app state
+// let appEnabled = true;
+
+// function toggleApp() {
+//   const appBtn = document.getElementById("appToggleBtn");
+//   appEnabled = !appEnabled;
+
+//   if (appEnabled) {
+//     appBtn.classList.remove("off");
+//   } else {
+//     appBtn.classList.add("off");
+//   }
+// }
+
+
+    let enabled;
+     // Assume app is enabled by default
+    async function toggleApp() {
+    // let enabled = data.enabled;
+      try {
+        // Decide command based on current lock status
+        const command = Number(enabled) ? "3" : "2"; // 1 for enabled, 0 for disabled
+        // Send command to server
+        const response = await fetch(`/send?message=${command}`);
+        // response = await fetch('/send?message=0');
+
+        // Optionally refresh lock status after sending
+        setTimeout(fetchHomepageData, 500); // Delay briefly to let Arduino respond
+
+
+      } catch (err) {
+        console.error("Error sending lock command:", err);
+      }
+    }
+
+
+
+
+    async function fetchHomepageData() {
+  try {
+    const appBtn = document.getElementById("appToggleBtn");
+    const res = await fetch('/data');
+    data = await res.json();
+    enabled = data.enabled; // Store the enabled state
+    if (Number(enabled)){
+      appBtn.classList.remove("off");
+    } else {
+      appBtn.classList.add("off");
+    }
+
+  } catch (err) {
+    console.error("Error fetching homepage data:", err);
   }
 }
-
+window.onload = () => {
+  fetchHomepageData();
+  setInterval(fetchHomepageData, 1000);
+};
