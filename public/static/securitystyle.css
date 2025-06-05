@@ -70,12 +70,12 @@
     }
 
     .unlock {
-      background-color: #d5e0d4dd !important;
+      background-color: green !important;
       color: white !important;
     }
 
     .lock {
-      background-color: #d5e0d4dd !important;
+      background-color: red !important;
       color: white !important;
     }
 

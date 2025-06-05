@@ -25,7 +25,8 @@ html, body {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: linear-gradient(135deg, #0d47a1 20%, #0056b3 80%);
+  /* background: linear-gradient(135deg, #0d47a1 20%, #0056b3 80%); */
+  background: #182d4b;
   position: relative;
   overflow: hidden;
   /* border-radius: 8px; */
@@ -132,7 +133,7 @@ html, body {
 }
 
 .login-form button:hover {
-  background-color: #0056b3;
+  background-color: #233c5f;
 }
 /* Input Fields */
 .input-container {
@@ -208,7 +209,7 @@ html, body {
 }
 
 .app-title {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
   font-weight: bold;
 }
@@ -247,7 +248,7 @@ html, body {
   height: 100%;
   backface-visibility: hidden;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -256,9 +257,11 @@ html, body {
 }
 
 .flip-card-front {
-  background-color: #0056b3;
+  /* background-color: linear-gradient#182d4b; */
+  background: linear-gradient(-90deg, #182d4b 30%, #233c5f 70%);
+  
   color: white;
-   backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 .flip-card-back {
@@ -282,5 +285,11 @@ html, body {
 
 .icon-svg {
   height: 50px;
+  margin-bottom: 0.5rem;
+}
+
+.icon-logo {
+  width: 150px;
+  height: 150px;
   margin-bottom: 0.5rem;
 }
