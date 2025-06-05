@@ -43,12 +43,12 @@ const DISPLAY_INTERVAL = 10000; // 10 seconds in milliseconds
     }
 
     // Toggle lock DOULEVEI
-    async function toggleLock(isLocked) {
+    async function toggleLock() {
       try {
         const statusEl = document.getElementById("lockStatus");
 
         // Decide command based on current lock status
-        const command = statusEl.textContent === "Locked✔️" ? "0" : "1";
+        const command = statusEl.textContent === "Locked✔️" ? "1" : "0";
         // Send command to server
         const response = await fetch(`/send?message=${command}`);
         // response = await fetch('/send?message=0');
